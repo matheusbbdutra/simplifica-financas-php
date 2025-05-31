@@ -1,0 +1,29 @@
+services:
+    postgres:
+        image: postgres:15
+        container_name: pg_app
+        restart: unless-stopped
+        ports:
+            - "5432:5432"
+        environment:
+            DB_DATABASE: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+
+    postgres_test:
+        image: postgres:15
+        container_name: pg_test
+        restart: unless-stopped
+        ports:
+            - "5433:5432"
+        environment:
+            DB_DATABASE: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        tmpfs:
+            - /var/lib/postgresql/data
+
+volumes:
+    pgdata:
