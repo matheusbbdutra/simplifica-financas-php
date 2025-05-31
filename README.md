@@ -1,61 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Simplifica Finanças PHP
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API para gerenciamento financeiro pessoal, desenvolvida em PHP com Laravel 12, arquitetura DDD (Domain-Driven Design) e princípios de Clean Architecture.
 
-## About Laravel
+## Visão Geral
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+O projeto permite o cadastro e autenticação de usuários, além do gerenciamento de contas, cartões de crédito, categorias, subcategorias e transações financeiras. Utiliza autenticação via tokens (Laravel Sanctum) e suporta múltiplos bancos de dados (SQLite, PostgreSQL, MySQL).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Arquitetura
 
-## Learning Laravel
+O projeto segue os princípios de **Domain-Driven Design (DDD)** e **Clean Architecture**, separando responsabilidades em camadas bem definidas:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Domain**: Entidades de negócio puras, sem dependências externas.
+- **Application**: Casos de uso (orquestração da lógica de negócio).
+- **Infrastructure**: Implementações técnicas (Eloquent Models, Repositórios, Providers).
+- **Adapter**: Interfaces de entrada/saída (Controllers, DTOs, Requests).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Estrutura de Pastas
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+app/
+  Finance/
+    Domain/Entities/         # Entidades do domínio financeiro
+    Infrastructure/          # Models Eloquent e repositórios financeiros
+    Adapter/                 # DTOs e interfaces HTTP para finanças
+  User/
+    Domain/Entities/         # Entidade User
+    Application/UseCases/    # Casos de uso de usuário
+    Infrastructure/          # Models, repositórios e providers de usuário
+    Adapter/                 # Controllers, DTOs e Requests de usuário
+bootstrap/                   # Inicialização do Laravel
+config/                      # Configurações do Laravel e integrações
+database/                    # Migrations, seeders e factories
+routes/                      # Rotas da API e comandos
+tests/                       # Testes unitários e de funcionalidade
+```
 
-## Laravel Sponsors
+### Exemplo de Fluxo (Cadastro de Usuário)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Request**: [`CreateUserRequest`](app/User/Adapter/Http/Requests/CreateUserRequest.php) recebe e valida os dados.
+2. **DTO**: Dados são convertidos para [`CreateUserDTO`](app/User/Adapter/Http/DTOs/CreateUserDTO.php).
+3. **Controller**: [`UserController`](app/User/Adapter/Http/Controller/UserController.php) chama o caso de uso.
+4. **UseCase**: [`CreateUserUseCase`](app/User/Application/UseCases/CreateUserUseCase.php) orquestra a criação.
+5. **Domain**: [`User`](app/User/Domain/Entities/User.php) representa a entidade de domínio.
+6. **Repository**: [`UserRepository`](app/User/Infrastructure/Persistence/Repository/UserRepository.php) salva no banco via [`UserModel`](app/User/Infrastructure/Persistence/Models/UserModel.php).
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Funcionalidades
 
-## Contributing
+- Cadastro, login e atualização de usuário ([rotas](routes/api.php))
+- Gerenciamento de contas bancárias, cartões, categorias, subcategorias e transações (em desenvolvimento)
+- Autenticação via Laravel Sanctum
+- Suporte a filas, cache, sessões e múltiplos bancos de dados
+- Testes automatizados ([tests/](tests/))
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## Instalação
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```sh
+git clone https://github.com/seu-usuario/simplifica-financas-php.git
+cd simplifica-financas-php
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-## Security Vulnerabilities
+Para rodar com PostgreSQL via Docker:
+```sh
+docker-compose up -d
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Testes
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```sh
+php artisan test
+```
+
+---
+
+## Principais Rotas
+
+- `POST /api/user/register` — Cadastro de usuário
+- `POST /api/user/login` — Login (retorna token)
+- `PUT /api/user/update` — Atualização de dados (autenticado)
+
+Veja todas as rotas em [routes/api.php](routes/api.php).
+
+---
+
+## Tecnologias
+
+- PHP 8.2+
+- Laravel 12.x
+- Laravel Sanctum
+- Docker (opcional)
+- PHPUnit
