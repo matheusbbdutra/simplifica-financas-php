@@ -17,6 +17,6 @@ readonly class CreateAccountUseCase implements CreateAccountUseCaseInterface
     public function __invoke(CreateAccountDTO $dto): void
     {
         $account = AccountMapper::accountDomainFromCreateAccountDto($dto);
-        $account = $this->repository->save($account);
+        $this->repository->save($account);
     }
 }
