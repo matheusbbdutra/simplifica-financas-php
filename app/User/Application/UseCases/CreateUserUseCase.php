@@ -16,7 +16,7 @@ readonly class CreateUserUseCase implements CreateUserUseCaseInterface
 
     public function __invoke(CreateUserDTO $createUserResponseDTO): User
     {
-        $user = UserMapper::fromDto($createUserResponseDTO);
+        $user = UserMapper::userDomainfromDto($createUserResponseDTO);
         return $this->repository->save($user);
     }
 }

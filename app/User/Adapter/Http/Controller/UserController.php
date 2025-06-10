@@ -40,7 +40,7 @@ class UserController extends Controller
     public function create(CreateUserRequest $request): JsonResponse
     {
         try {
-            $user = ($this->createUserUseCase)($request->getUserDTO());
+            $user = ($this->createUserUseCase)($request->getDTO());
 
             return response()->json(
                 ['message' => "User {$user->getName()} created successfully."],

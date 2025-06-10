@@ -7,7 +7,7 @@ use App\User\Infrastructure\Persistence\Models\UserModel;
 
 class UserMapper
 {
-    public static function toModel(User $user): UserModel
+    public static function userModelFromDomain(User $user): UserModel
     {
         $model = new UserModel([
             'name' => $user->getName(),
@@ -22,7 +22,7 @@ class UserMapper
         return $model;
     }
 
-    public static function toDomain(UserModel $model): User
+    public static function userDomainFromModel(UserModel $model): User
     {
         return new User(
             $model->id,

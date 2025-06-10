@@ -16,11 +16,6 @@ class UpdateUserRequest extends FormRequest
         ];
     }
 
-    public function authorize()
-    {
-        return true;
-    }
-
     public function getDTO(): UpdateUserDTO
     {
         return new UpdateUserDTO(
