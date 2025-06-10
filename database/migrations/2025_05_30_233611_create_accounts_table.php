@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->float('balance');
-            $table->timestamp('created_at')->nullable();
             $table->foreignId('user_id')->constrained('users');
+            $table->timestamps();
         });
     }
 

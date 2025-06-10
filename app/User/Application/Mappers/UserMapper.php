@@ -7,7 +7,7 @@ use App\User\Adapter\Http\DTOs\CreateUserDTO;
 
 readonly class UserMapper
 {
-    public static function fromDto(CreateUserDTO $dto): User
+    public static function userDomainfromDto(CreateUserDTO $dto): User
     {
         return new User(
             null,

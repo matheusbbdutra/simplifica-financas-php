@@ -16,12 +16,7 @@ class CreateUserRequest extends FormRequest
         ];
     }
 
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    public function getUserDTO(): CreateUserDTO
+    public function getDTO(): CreateUserDTO
     {
         return new CreateUserDTO(
             $this->input('name'),

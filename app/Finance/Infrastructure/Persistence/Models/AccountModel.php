@@ -12,7 +12,6 @@ class AccountModel extends Model
     protected $fillable = [
         'name',
         'balance',
-        'created_at',
         'user_id',
     ];
 

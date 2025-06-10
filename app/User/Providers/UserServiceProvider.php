@@ -12,7 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use App\User\Ports\UseCases\CreateUserUseCaseInterface;
 use App\User\Application\UseCases\CreateUserUseCase;
 
-class UserProvider extends ServiceProvider
+class UserServiceProvider extends ServiceProvider
 {
     public function register()
     {

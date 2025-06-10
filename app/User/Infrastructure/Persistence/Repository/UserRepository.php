@@ -27,7 +27,7 @@ class UserRepository implements UserRepositoryInterface
                     'password' => $user->getPassword(),
                 ]);
             }
-            return UserMapper::toDomain($model);
+            return UserMapper::userDomainFromModel($model);
         });
     }
 
@@ -42,7 +42,7 @@ class UserRepository implements UserRepositoryInterface
     {
         return DB::transaction(function () use ($id) {
             $model = UserModel::find($id);
-            return $model ? UserMapper::toDomain($model) : null;
+            return $model ? UserMapper::userDomainFromModel($model) : null;
         });
     }
 }
